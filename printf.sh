@@ -1,0 +1,1 @@
+printf "%s\n" "hello world" "in" "bash script" "again" "another line"

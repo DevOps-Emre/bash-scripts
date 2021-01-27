@@ -1,4 +1,4 @@
-for i in $@	# $@ an array of inputted arguments
+for i in $@	 # $@ an array of inputted arguments
 do
 	echo $i
 done

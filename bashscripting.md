@@ -1,15 +1,19 @@
-# Pipes: send the result of one process to another |
+- Pipes: send the result of one process to another |
   - ls | wc -l
-# Redirections: send streams to or from files
+
+- Redirections: send streams to or from files
   - ls > list.txt
   - ls /notreal 1>output.txt 2>error.txt  # if gives error redirect to error.txt
-# echo "some text"
-# printf "some text"  # without \n at the end, same as echo
-# command -V echo  # shows the command is builtin or not; builtins take precedence over commands!
-# enable -n echo  # specific builtins can be enabled
+
+- echo "some text"
+- printf "some text"  # without \n at the end, same as echo
+- command -V echo  # shows the command is builtin or not; builtins take precedence over commands!
+- enable -n echo  # specific builtins can be enabled
   enable -n  # shows builtins disabled
   enable echo  # enables the builtin command again
+
 # Parantheses (), Braces {}, Brackets []
+
 # Brace expansion
   - echo /tmp/{one,two,three}/file.txt
     /tmp/one/file.txt /tmp/two/file.txt /tmp/three/file.txt
@@ -24,6 +28,7 @@
   - echo {a..z..2}  # can be set with intervals
     a c e g i k m o q s u w y
   - touch file_{01..10}{a..d}
+
 # Parameter expansion: ${...} retrieves and transforms stored values
   - greeting="hello there"
     echo ${greeting}
@@ -101,17 +106,19 @@ do
 done
 ---
 
-
-
 # echo -n "No newline"  # -n option deletes unvisible new line
+
 # declare -r myname="Rafe"  # declare read only variable
   declare -l  # uppercase the var
   decclare -u  # lovercase the var
   declare -p  # show all variables declared during session
   declare -i  # declare an integer, instead of string value
+
 # env  # all environment variables, look for them and echo them
+
 # echo $RANDOM  # gives a random number between 0 to 32767
   echo $(( 1 + $RANDOM % 10 ))  # gives a random number between 1 to 10, make sure not 0 added 1 +
+
 # echo -e ...  # Interprets escaped characters like \t, \n, \a, and other control characters
   echo -e "Name\t\tNumber"; echo -e "Scott\t\t123"
   Name            Number
@@ -144,11 +151,13 @@ done
     offices["building name"]="HQ West"
     echo ${offices["building name"]} is in ${offices[city]}
     HQ West is in San Fransisco
+
 # Challenge:
   - Compose a script to show some system information
   - Use some standard tools, like df, free, or others
   - Use awk or sed to extract text from output, if you know them
   - Use formatted text
+
 #!/usr/bin/env bash
 # A script to output a brief summary of system information
 #  - df -h

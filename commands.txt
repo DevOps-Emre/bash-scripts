@@ -6,19 +6,22 @@ Useful Linux Commands:
   - tar xf files.tar -C FOLDER  # -C=specify the target directory
   - zip -r file.zip FILE/FOLDER  # -r=zip along with its contents
   - unzip file.zip
+
 # Mischelenious:
   - echo "hello" | wc  # wc word count, includes unvisible \n new line
   - head/tail -n5  file.txt  #  -n5 5 lines, default 10 lines
   - cat file.txt | cat -n   # -n option numbers the lines
   - cat file.txt | tail -n5 | cat -n  # first prints last 5 lines, than gives number to this lines
   - less file.txt  # move around the text
+
 # Searching for text:
   - grep "the" file.txt  # highlights the search term of "the" and shows all lines with it
-  - grep -n "the" file.txt  # -n option gives prints the line numbers also the original
+  - grep -n "the" file.txt  # -n option gives prints also the original line numbers 
   - grep -i "the" file.txt  # -i option makes grep command case insensitive
   - grep -vi "the" file.txt  # -vi option drops the "the" word and shows other lines of file
   - grep -E "[hijk]" file.txt  # regular expression can be searched with -E option (regular expressions, regex)
   - grep -E "\w{6,}" file.txt  # words longer than 6 chars will be searched
+
 # Manipulating Text (awk, sed=stream editor, sort)
   - awk '{print $2}' file.txt  # from a 3 column file, prints the 2nd column
   - awk '{print $2 "\t" $1}' file.txt  # first show the 2nd column, than put a tab, print the first column
@@ -28,16 +31,20 @@ Useful Linux Commands:
   - sort -k2 file.txt  # sorts by the 2nd column but with the first character instead:
   - sort -k2 -n file.txt  # with -n option it sorts with the whole number
   - sort -u file.txt  # ignores duplicates with -u option
+
 # Stream Manipulation (rev=print text in reverse sequence, tac=concatenate and print files in reverse, tr=translate or modify infividual chars)
+
 # Redirection: (stdin=0, stdout=1, stderr=3)
   - ls 1>file.txt  # redirect the output of ls command to file.txt, 1=stdout
   - ls > file.txt  # redirection of stdout is very common so using 1 is optional, this command same with above
   - ls notreal 2> file.txt  # prints the error message to the file.txt
   - >file.txt  # be carefull using redirection, this command overwrites, result will be an empty file.txt !
   - echo "some appended text" >>file.txt  # use double greater singn to append
+
 # Path:(env, which)
   - which ls  # path of the command
-# Challenge: Find hackers unsuccessful login attempts- 15mins
+
+# Challenge: Find hackers unsuccessful login attempts - 15mins
   - Extract log.tar.gz
     * tar xf log.tar.gz
   - Look for unauthorized connection attempts
