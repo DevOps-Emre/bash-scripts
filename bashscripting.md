@@ -784,7 +784,11 @@ read num
 echo $num | bc -l | xargs printf "%.*f\n" 3
 ```
 
-
+### Given  N integers, compute their average, rounded to three decimal places.
+```bash
+read n
+printf "%.3f" $(echo "("$(cat)")/$n" | tr ' ' '+' | bc -l)
+```
 
 
 
