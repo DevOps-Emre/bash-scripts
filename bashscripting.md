@@ -1,98 +1,132 @@
-- Pipes: send the result of one process to another |
-  - ls | wc -l
+# Bash Scripting
 
-- Redirections: send streams to or from files
-  - ls > list.txt
-  - ls /notreal 1>output.txt 2>error.txt  # if gives error redirect to error.txt
+## Pipes: send the result of one process to another
+```bash
+ls | wc -l
+```
 
-- echo "some text"
-- printf "some text"  # without \n at the end, same as echo
-- command -V echo  # shows the command is builtin or not; builtins take precedence over commands!
-- enable -n echo  # specific builtins can be enabled
-  enable -n  # shows builtins disabled
-  enable echo  # enables the builtin command again
+## Redirections: send streams to or from files
+```bash
+ls > list.txt
+ls /notreal 1>output.txt 2>error.txt  # if gives error redirect to error.txt
+echo "some text"
+printf "some text"  # without \n at the end, same as echo
+command -V echo  # shows the command is builtin or not; builtins take precedence over commands!
+enable -n echo  # specific builtins can be enabled
+enable -n  # shows builtins disabled
+enable echo  # enables the builtin command again
+```
 
 # Parantheses (), Braces {}, Brackets []
 
-# Brace expansion
-  - echo /tmp/{one,two,three}/file.txt
-    /tmp/one/file.txt /tmp/two/file.txt /tmp/three/file.txt
-  - echo c{a,o,u}t
-    cat cot cut
-  - echo /tmp/{1..3}/file.txt
-    /tmp/1/file.txt /tmp/2/file.txt /tmp/3/file.txt
-  - echo {00..10}
-    00 01 02 03 04 05 06 07 08 09 10
-  - echo {a..z}
-    a b c d e f g h i j k l m n o p q r s t u v w x y z
-  - echo {a..z..2}  # can be set with intervals
-    a c e g i k m o q s u w y
-  - touch file_{01..10}{a..d}
+## Brace expansion
+```bash
+echo /tmp/{one,two,three}/file.txt
+# /tmp/one/file.txt /tmp/two/file.txt /tmp/three/file.txt
 
-# Parameter expansion: ${...} retrieves and transforms stored values
-  - greeting="hello there"
-    echo ${greeting}
-    echo ${greeting:6}
-    echo ${greeting:6:3}
-    echo ${greeting/there/everybody}
-      hello everybody
-    echo ${greeting//e/_}
-      h_llo th_r_
-    echo ${greeting/e/_}
-      h_llo there
+echo c{a,o,u}t
+# cat cot cut
 
-# Command Substitution: $(...) puts the output of one command inside another
-  - uname -r
-      4.4.0-19041-Microsoft
-  - echo "The kernel is $(uname -r)."
-      The kernel is 4.4.0-19041-Microsoft.
-  - echo "Result: $(python3 -c 'print("Hello from Python")' | tr [a-z] [A-Z]
+echo /tmp/{1..3}/file.txt
+# /tmp/1/file.txt /tmp/2/file.txt /tmp/3/file.txt
 
-# Arithmetic expansion: $((...)) does math.
-  - echo $(( 2 + 3 ))
-  - echo $(( 1 / 3 ))
-    0  # to deal with that:
-  - declare -i c=1
-    declare -i d=3
-    e=$(echo "scale=3; $c/$d" | bc)  # The bc command, short for basic calculator, is a language that supports arbitrary 
-                                        precision numbers with interactive execution of statements.
-    				     # scale is number of digits after decimal point
-    .333
+echo {00..10}
+# 00 01 02 03 04 05 06 07 08 09 10
 
-# Arithmetic evaluation: ((...)) performs calculations and changes the value of variables
-  - a=3
-    ((a++))
-    echo $a
+echo {a..z}
+# a b c d e f g h i j k l m n o p q r s t u v w x y z
 
-# Compare things / test values: [ ... ]  # 0 for success, 1 for failure
-  - [ -d ~ ] 
-  - echo $?
-    0
-  - [ -d /bin/bash ]; echo $?  # check if /bin/bash is a directory or not; but is a file
-    1
-  - help test  # to find exotic ones
-  - [ ! 4 -lt 3 ]; echo $?  
-    0  # ! gives the opposite result
+echo {a..z..2}  # can be set with intervals
+# a c e g i k m o q s u w y
 
-# Extended test: [[ ... ]]  # can be used more than one expression
-  - [[ -d ~ && -a /bin/bash ]]; echo $?
-    0  # ~ is a directory and bash binary exists at the same time
+touch file_{01..10}{a..d}
+```
+
+## Parameter expansion: ${...} retrieves and transforms stored values
+```bash
+greeting="hello there"
+echo ${greeting}
+# hello there
+echo ${greeting:6}
+# there
+echo ${greeting:6:3}
+# the
+echo ${greeting/there/everybody}
+# hello everybody
+echo ${greeting//e/_}
+# h_llo th_r_
+echo ${greeting/e/_}
+# h_llo there
+```
+
+## Command Substitution: $(...) puts the output of one command inside another
+```bash
+uname -r
+# 4.4.0-19041-Microsoft
+echo "The kernel is $(uname -r)."
+# The kernel is 4.4.0-19041-Microsoft.
+echo $(python3 -c 'print("Hello from Python")')
+# Hello from Python
+echo "Result: $(python3 -c 'print("Hello from Python")')" | tr [a-z] [A-Z]
+# RESULT: HELLO FROM PYTHON
+```
+
+## Arithmetic expansion: $((...)) does math
+```bash
+echo $(( 2 + 3 ))
+
+echo $(( 1 / 3 ))
+# 0  # to deal with that:
+
+declare -i c=1
+declare -i d=3
+e=$(echo "scale=3; $c/$d" | bc)  
+# The bc command, short for basic calculator, is a language that supports arbitrary precision numbers with interactive execution of statements.
+# scale is number of digits after decimal point
+# .333
+```
+
+## Arithmetic evaluation: ((...)) performs calculations and changes the value of variables
+```bash
+a=3
+(( a++ ))
+echo $a
+```
+
+## Compare things / test values: [ ... ]  # 0 for success, 1 for failure
+```bash
+[ -d ~ ] 
+echo $?
+# 0
+
+[ -d /bin/bash ]; echo $?  # check if /bin/bash is a directory or not; but is a file
+# 1
+
+help test  # to find exotic ones
+[ ! 4 -lt 3 ]; echo $?  
+# 0  # ! gives the opposite result
+```
+
+## Extended test: [[ ... ]]  # can be used more than one expression
+```bash
+[[ -d ~ && -a /bin/bash ]]; echo $?
+# 0  # ~ is a directory and bash binary exists at the same time
   - && and
   - || or
-  - [[ "cat" =~ c.* ]]; echo $?
-    0
+[[ "cat" =~ c.* ]]; echo $?
+# 0
 
 nano script.sh
 #!/usr/bin/env bash	# alt: #!/bin/bash using env command, it could be in a different location and still can work 
 echo "hello"
 chmod +x script.sh
 ./script.sh
+```
 
-
-# Debugger mode:
+## Debugger mode:
 bash -x ./script.sh
 
----
+```bash
 #!/usr/bin/env bash
 set -x			# Only first part of the code will be debugged!
 for i in {1..10}
@@ -104,9 +138,9 @@ for i in {a..z}
 do
 	echo $i
 done
----
+```
 
-# echo -n "No newline"  # -n option deletes unvisible new line
+## echo -n "No newline"  -n option deletes unvisible new line
 
 # declare -r myname="Rafe"  # declare read only variable
   declare -l  # uppercase the var
@@ -158,6 +192,7 @@ done
   - Use awk or sed to extract text from output, if you know them
   - Use formatted text
 
+```bash
 #!/usr/bin/env bash
 # A script to output a brief summary of system information
 #  - df -h
@@ -211,10 +246,10 @@ printf "\tFree Storage:\t%s\n" $freespace
 printf "\tFree Memory:\t%s\n" $freemem
 printf "\tFiles in pwd:\t%s\n" $(ls | wc -l)
 printf "\tGenerated on:\t%s\n" $logdate
+```
 
-
-# Conditionals:
--------------------------------
+## Conditionals:
+```bash
 if ...condition...[[...]]...true
 then
    ...
@@ -223,9 +258,9 @@ elif
 else
    ...
 fi
--------------------------------
+```
 
-# Loops: while, until, for
+## Loops: while, until, for
 
 -------------------------------
 while/until ...
@@ -341,35 +376,35 @@ done < "$1"
 
 
 
-# Functions: Repeatedly call a piece of code
------------------------
+## Functions: Repeatedly call a piece of code
+```bash
 fn(){
 	....
 }
------------------------
-
+```
+```bash
 #!/usr/bin/env bash
 greet(){
         echo "Hi there"
 }
 echo "And now, a greeting..."
 greet
+```
 
-
-
+```bash
 #!/usr/bin/env bash
 greet(){
         echo "Hi there, $1"  # $1 will take the first argument
 }
 echo "And now, a greeting..."
 greet Scott  # Scott is the first argument in this example
+```
 
-
-# Function variables: $@ represents the list of arguments given to a function
+## Function variables: $@ represents the list of arguments given to a function
 		      $* also represents the list of arguments, but it brings them all in one item
                       $FUNCNAME represents the name of the function
 
-
+```bash
 #!/usr/bin/env bash
 numberthing(){
         declare -i i=1
@@ -383,26 +418,26 @@ numberthing(){
 numberthing $(ls /)		# function will get the result of ls  and number them
 echo
 numberthing pine birch maple spruce	# function will get arguments one by one and number them
+```
 
+### Every variable in bash is global, to make it local put "local" keyword before it!
 
-# Every variable in bash is global, to make it local put "local" keyword before it!
-
-# Write files: echo "abc" > out.txt  # overwrites the content of out.txt
+### Write files: echo "abc" > out.txt  # overwrites the content of out.txt
                echo "abc" >> out.txt  # appends the content at the end of the out.txt
-
+```bash
 #!/usr/bin/env bash
 for i in 1 2 3 4 5
 do
         echo "This is line $i" > ./out.txt  # overwrites in every iteration, only can see last line
 done
-
-
+```
+```bash
 #!/usr/bin/env bash
 for i in 1 2 3 4 5
 do
         echo "This is line $i" >> ./out.txt  # useful to create your own log files
 done
-
+```
 
 Read files:  extract matching text(search for a term in log files), transform etc.
              do echo $line; done < in.txt  # loop will read in.txt line by line
@@ -413,14 +448,15 @@ while read f
 done < ./out.txt
 
 
-# Challenge:
-  - Compose a script that uses control structures to show random replies
-    * echo $RANDOM  # gives a random number between 0 to 32767
-    * echo $(( 1 + $RANDOM % 10 ))  # gives a random number between 1 to 10, make sure not 0 added 1 +
-  - Examples include a quote viewer, a dice roll, or a card raw
-  - 20min
+## Challenge:
+- Compose a script that uses control structures to show random replies
+  * echo $RANDOM  # gives a random number between 0 to 32767
+  * echo $(( 1 + $RANDOM % 10 ))  # gives a random number between 1 to 10, make sure not 0 added 1 +
+- Examples include a quote viewer, a dice roll, or a card raw
+- 20min
 
-# A randomness game
+## A randomness game
+```bash
 echo -e "\t\tWelcome to the"
 echo -e "\t\t\033[5mGame\033[0m"	# echo -e ...  # Interprets escaped characters like \t, \n, \a, and other control characters
 echo
@@ -447,9 +483,9 @@ esac
 echo
 echo ${fortunes[mysterynumber]}  # Parameter expansion: ${...} retrieves and transforms stored values
 echo
+```
 
-
-# Arguments: 	Allows us to pass information (user input) into a script from the CLI, represented $1, $2 etc. Type it after the script name
+## Arguments: 	Allows us to pass information (user input) into a script from the CLI, represented $1, $2 etc. Type it after the script name
 		$0 is the name of the script
 ---
 #!/usr/bin/env bash
@@ -464,18 +500,20 @@ echo "The $0 script got the argument $1"
 
 ./argument1.sh "Tasty Apples!"
 The ./argument1.sh script got the argument Tasty Apples!
----	
+
+```bash
 #!/usr/bin/env bash
 for i in $@	# $@ an array of inputted arguments
 do
 	echo $i
 done
 
-./argument2.sh apple banana pear
-apple
-banana
-pear
----
+# ./argument2.sh apple banana pear
+# apple
+# banana
+# pear
+```
+```bash
 #!/usr/bin/env bash
 for i in $@	# $@ an array of inputted arguments
 do
@@ -483,17 +521,18 @@ do
 done
 echo "There were $# arguments."
 
-./argument3.sh apple banana pear
-apple
-banana
-pear
-There were 3 arguments.
+# ./argument3.sh apple banana pear
+# apple
+# banana
+# pear
+# There were 3 arguments.
+```
 
-
-# Options: to access it use getopts keyword
+## Options: to access it use getopts keyword
            can take arguments
            can be used in any order
 
+```bash
 while getopts u:p: option	# creates an options string which defines which options I'm looking for; my script will have -u and -p options
 do
 	case $option in 
@@ -503,9 +542,12 @@ do
 done
 echo "user: $user / pass: $pass"
 
-./options1.sh -u Rafe -p 123	# The order of the options are not important!
-user: Rafe / pass: 123
----
+# ./options1.sh -u Rafe -p 123	
+# The order of the options are not important!
+# user: Rafe / pass: 123
+```
+
+```bash
 #!/usr/bin/env bash
 while getopts u:p:ab option	# I want to now whether the flag is used, type without column; to enable/disable certain features
 do
@@ -521,7 +563,9 @@ echo "user: $user / pass: $pass"
 ./options2.sh -p Rafe -u 123 -a
 Got the A flag
 user: 123 / pass: Rafe
----
+```
+
+```bash
 #!/usr/bin/env bash
 while getopts :u:p:ab option	# column before the first option, I want to know other options used on CLI
 do
@@ -538,11 +582,11 @@ echo "user: $user / pass: $pass"
 ./options3.sh -p -a -z
 I don't know what th z is!
 user:  / pass: -a
----
+```
 
-# Getting input interactively: read keyword, script pauses untill input is entered, input stored in a variable
+## Getting input interactively: read keyword, script pauses untill input is entered, input stored in a variable
 
-
+```bash
 #!/usr/bin/env bash
 echo "Whats you name?"
 read name
@@ -551,8 +595,9 @@ read -s password        # -s option: dont show password
 read -p "Whats your favorite animal? " animal	# -p option: all in one line, use space after the question the prompt will begin right after it
 echo
 echo -e "Name: $name\nPassword: $password\nFavorite animal: $animal"
----
+```
 
+```bash
 #!/usr/bin/env bash
 echo "Which animal"
 select animal in "cat" "dog" "bird" "fish"	# User selects from the list of options
@@ -569,8 +614,9 @@ Which animal
 4) fish
 #? 4
 You selected fish!
----
+```
 
+```bash
 #!/usr/bin/env bash
 echo "Which animal"
 select animal in "cat" "dog" "quit"	# User selects from the list of options
@@ -595,16 +641,16 @@ Cats like to sleep
 #? 5
 Not sure what that is
 #? 3
+```
 
----
-# User ignores to give input cause some problems, how to deal with that?: 
+## User ignores to give input cause some problems, how to deal with that?: 
 
 #!/usr/bin/env bash
 read -ep "Favorite color? " -i "Blue" favcolor	# -i option will advice us Blue, user can accept or change it
 echo $favcolor
 
----
 
+```bash
 #!/usr/bin/env bash
 if (($#<3)); then
 	echo "This command requires three commands: "
@@ -615,7 +661,9 @@ else
 	echo "user id: $2"
 	echo "favorite number: $3"
 fi
+```
 
+```text
 ./input6.sh
 This command requires three commands:
 username, user id, and favorite number.
@@ -624,8 +672,9 @@ username, user id, and favorite number.
 username: Rafe
 user id: 123
 favorite number: 111
----
+```
 
+```bash
 #!/usr/bin/env bash
 read -p "Favorite animal? " fav
 while [[ -z $fav ]]	# -z option checks if there is variable entered or not
@@ -633,7 +682,8 @@ do
 	read -p "I need an answer! " fav
 done
 echo "$fav was selected."
-
+```
+```text
 ./input7.sh
 Favorite animal? Dog
 Dog was selected.
@@ -642,8 +692,9 @@ Dog was selected.
 Favorite animal?
 I need an answer!
 I need an answer!
----
+```
 
+```bash
 #!/usr/bin/env bash
 read -p "Favorite animal [cat]? " fav	# [cat] indicates user the default answer is the cat
 while [[ -z $fav ]]	
@@ -651,8 +702,8 @@ do
 	fav="cat"	# instead of asking again, assign the default value to variable
 done
 echo "$fav was selected."
+```
 
----
 ```bash
 #!/usr/bin/env bash
 read -p "What year? [nnnn] " year
@@ -727,7 +778,7 @@ esac
 ```
 
 ## Basic Calculation: bc command 
-- A mathematical expression containing +,-,*,^, / and parenthesis will be provided. Read in the expression, then evaluate it. Display the result rounded to  decimal places.
+A mathematical expression containing +,-,*,^, / and parenthesis will be provided. Read in the expression, then evaluate it. Display the result rounded to  decimal places.
 ```bash
 read num 
 echo $num | bc -l | xargs printf "%.*f\n" 3
