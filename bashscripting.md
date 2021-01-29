@@ -653,7 +653,7 @@ done
 echo "$fav was selected."
 
 ---
-
+```bash
 #!/usr/bin/env bash
 read -p "What year? [nnnn] " year
 until [[ $year =~ [0-9]{4} ]]		# this checks entered number 4 digits, 0 to 9
@@ -661,13 +661,12 @@ do
 	read -p "A year, please! [nnnn] " year	# until the answer is correct it will ask
 done
 echo "Selected year: $year"
+```
 
----
+## Challenge:
+  - Put together what you learned.
 
-# Challenge:
-  - put together you learned
----
-
+```bash
 #!/usr/bin/env bash
 # A three-in-one game app
 # The game definitions
@@ -704,7 +703,7 @@ dice() {
 	choosegame	
 }
 
-## The game chooser
+# The game chooser
 choosegame(){
 	select game in "Guessing Game" "Flip a Coin" "Dice Roll" "Exit"
 	do
@@ -718,13 +717,14 @@ choosegame(){
 	done 
 }
 
-### If there is an argument provided, jump right to that game. Otherwise, show game choose menu.
+# If there is an argument provided, jump right to that game. Otherwise, show game choose menu.
 case $1 in
 	"guess") guess;;
 	"flip") flip;;
 	"dice") dice;;
 	*) choosegame;;
 esac
+```
 
 ## Basic Calculation: bc command 
 - A mathematical expression containing +,-,*,^, / and parenthesis will be provided. Read in the expression, then evaluate it. Display the result rounded to  decimal places.
