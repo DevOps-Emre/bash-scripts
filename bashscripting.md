@@ -704,7 +704,7 @@ dice() {
 	choosegame	
 }
 
-# The game chooser
+## The game chooser
 choosegame(){
 	select game in "Guessing Game" "Flip a Coin" "Dice Roll" "Exit"
 	do
@@ -718,7 +718,7 @@ choosegame(){
 	done 
 }
 
-# If there is an argument provided, jump right to that game. Otherwise, show game choose menu.
+### If there is an argument provided, jump right to that game. Otherwise, show game choose menu.
 case $1 in
 	"guess") guess;;
 	"flip") flip;;
@@ -726,7 +726,12 @@ case $1 in
 	*) choosegame;;
 esac
 
-
+## Basic Calculation: bc command 
+- A mathematical expression containing +,-,*,^, / and parenthesis will be provided. Read in the expression, then evaluate it. Display the result rounded to  decimal places.
+```bash
+read num 
+echo $num | bc -l | xargs printf "%.*f\n" 3
+```
 
 
 
